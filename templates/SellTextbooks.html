@@ -1,0 +1,270 @@
+{% load bootstrap5 %}
+{% bootstrap_css %}
+{% bootstrap_javascript %}
+{% bootstrap_messages %}
+{% load static %}
+{% load socialaccount %}
+
+<head>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.css" />
+    <link rel="stylesheet" href="{% static 'BookExchange/style.css' %}">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Great+Vibes&display=swap" rel="stylesheet">
+</head>
+
+
+<nav class="navbar navbar-expand-lg navbar-light bg-light">
+    <div class="container-fluid">
+        <a class="navbar-brand" href="/home">
+            <div class="logo-image">
+                <img src='https://www.pngkey.com/png/detail/8-87431_images-pngpix-stack-transparent-book-png.png' class="img-fluid">
+            </div>
+        </a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav">
+                {% if user.is_authenticated %}
+                <li class="nav-item">
+                    <a class="nav-link active" aria-current="page" href="/home">Home</a>
+                </li>
+                {% else %}
+                <li class="nav-item">
+                    <a class="nav-link active" aria-current="page" href="{% provider_login_url 'google' %}">Home</a>
+                </li>
+                {% endif %}
+
+                {% if user.is_authenticated %}
+                <li class="nav-item">
+                    <a class="nav-link" href="/sell/">Sell a Textbook</a>
+                </li>
+                {% else %}
+                <li class="nav-item">
+                    <a class="nav-link" href="{% provider_login_url 'google' %}">Sell a Textbook</a>
+                </li>
+                {% endif %}
+
+                {% if user.is_authenticated %}
+                <li class="nav-item">
+                    <a class="nav-link" href="/list/">Buy a Textbook</a>
+                </li>
+                {% else %}
+                <li class="nav-item">
+                    <a class="nav-link" href="{% provider_login_url 'google' %}">Buy a Textbook</a>
+                </li>
+                {% endif %}
+
+
+                <!-- <li class="nav-item">
+                    <a class="nav-link" href="/professors/">Professors</a>
+                </li> -->
+                {% if user.is_authenticated %}
+                <li class="nav-item">
+                    <a class="nav-link" href="/userprofile/{{ user.username }}">Profile</a>
+                </li>
+                {% else %}
+                <li class="nav-item">
+                    <a class="nav-link" href="{% provider_login_url 'google' %}">Profile</a>
+                </li>
+                {% endif %}
+
+
+            </ul>
+        </div>
+        <div class="navbar-nav navbar-right">
+            <ul class="nav navbar-nav navbar-right">
+                {% if user.is_authenticated %}
+                <a class="navbar-brand" href="/favorites">
+                    <div class="logo-image">
+                        <img src='https://www.citypng.com/public/uploads/preview/heart-black-button-icon-transparent-background-11639591554azr8yhqyje.png' class="img-fluid">
+                    </div>
+                </a>
+                {% else %}
+                <a class="navbar-brand" href="{% provider_login_url 'google' %}">
+                    <div class="logo-image">
+                        <img src='https://www.citypng.com/public/uploads/preview/heart-black-button-icon-transparent-background-11639591554azr8yhqyje.png' class="img-fluid">
+                    </div>
+                </a>
+                {% endif %}
+            </ul>
+        </div>
+        <div class="navbar-nav navbar-right">
+            <ul class="nav navbar-nav navbar-right">
+                {% if user.is_authenticated %}
+                <li class="nav-item">
+                    <a class="nav-link active" aria-current="page" href="/logout"><span style="color:darkred;"><b>Logout</b></span></a>
+                </li>
+                {% else %}
+                <li class="nav-item">
+                    <a class="nav-link" href="{% provider_login_url 'google' %}"><span style="color:MediumSeaGreen;"><b>Login</b></span></a>
+                </li>
+                {% endif %}
+            </ul>
+        </div>
+    </div>
+</nav>
+    {% block content %}
+<center>
+
+    <div class="field">
+        <h1 class="handwritten" style="color: white; font-size: 500%">List a textbook!</h1>
+        <form action="/write/" method="post">
+            {%csrf_token %}
+            <center>
+                <div class="row">
+                    <div class="column">
+                        Name:
+                        <br> <input class="form-control w-55" type="text" name="name" value="{{body.name}}" required>
+                    </div>
+                    <div class="column">
+                        Author:
+                        <br> <input class="form-control w-55" type="text" name="author" value="{{body.author}}" required>
+                    </div>
+                    <div class="column">
+                        ISBN:
+                        <br> <input class="form-control w-55" type="text" name="isbn" value="{{body.isbn}}" required>
+                        {% if error %}
+                            <p class="text-danger">Invalid ISBN number</p>
+                        {% endif %}
+                    </div>
+                </div>
+
+                Condition:<br>
+                <div class="form-check form-check-inline">
+                    <input class="form-check-input" type="radio" name="inCondition" id="inlineRadio1" value="New (Unused)" required>
+                    <label class="form-check-label" for="inlineRadio1">New (Unused)</label>
+                </div>
+
+                <div class="form-check form-check-inline">
+                    <input class="form-check-input" type="radio" name="inCondition" id="inlineRadio2" value="Lightly Used" required>
+                    <label class="form-check-label" for="inlineRadio2">Lightly Used</label>
+                </div>
+                <div class="form-check form-check-inline">
+                    <input class="form-check-input" type="radio" name="inCondition" id="inlineRadio3" value="Heavily Used" required>
+                    <label class="form-check-label" for="inlineRadio3">Heavily Used</label>
+                </div>
+
+                <div class="row">
+                    <div class="column">
+                        Price:
+                        <br> <input class="form-control w-55" type="number" step="0.01" min="0" name="price" value="{{body.price}}" required>
+                    </div>
+                    <div class="column">
+                        Instructor:
+                        <input class="form-control w-55" type="text" list="instructor" name="instructor" value="{{body.instructor}}" required/>
+                        <datalist id="instructor">
+                            {% for instructor in instructors %}
+                            <option value="{{instructor}}">{{instructor}}</option>
+                            {% endfor %}
+                        </datalist>
+                    </div>
+                    <div class="column">
+                        Course:
+                        <input class="form-control w-55" type="text" list="course" name="course" value="{{body.course}}" required/>
+                        <datalist id="course">
+                            {% for course in courses %}
+                            <option value="{{course}}">{{course}}</option>
+                            {% endfor %}
+                        </datalist>
+                    </div>
+                </div>
+                <br>
+            </center>
+            <style>
+                form {
+                    display: flex;
+                    flex-direction: column;
+                    background: #d2dce1;
+                    padding: 4vh 3vh;
+                    box-sizing: border-box;
+                    border-radius: 25px;
+                }
+
+                .column {
+                    float: left;
+                    width: 33.33%;
+                    padding: 10px;
+                }
+                .column2 {
+                    float: left;
+                    width: 50%;
+                    padding: 10px;
+                }
+
+                /* Clear floats after the columns */
+                .row:after {
+                    content: "";
+                    display: table;
+                    clear: both;
+                }
+
+                .field {
+                    width: 75%;
+                    border: 15px solid seagreen;
+                    padding: 5%;
+                    margin: 2%;
+                    background-color: mediumseagreen;
+                    border-radius: 25px;
+                }
+                @font-face {
+                    font-family: 'alluraregular';
+                    src: url('9orpnysqps4zjuapjaixptrrga-webfont.woff2') format('woff2'), url('9orpnysqps4zjuapjaixptrrga-webfont.woff') format('woff');
+                    font-weight: normal;
+                    font-style: normal;
+                }
+
+                .customfont {
+                    font-family: 'alluraregular';
+                }
+
+                .handwritten {
+                    font-family: Great Vibes;
+                }
+            </style>
+            <center>
+                <input class="buy-button" type="submit" value="Submit" onclick="myFunction();" />
+                <script>
+                    function myFunction() {
+                        // alert("Your Textbook has been listed");
+                    };
+                </script>
+            </center>
+
+        </form>
+        <center>
+            <div class="row">
+                <div class="column2">
+                    <form action="/list/">
+                        {%csrf_token %}
+                        {% buttons %}
+                        <input type="submit" value="See current listings!">
+                        {% endbuttons %}
+
+                    </form>
+                </div>
+                <div class="column2">
+                    <form action="/home/">
+                        {%csrf_token %}
+                        {% buttons %}
+                        <input type="submit" value="Return to home">
+                        {% endbuttons %}
+
+                    </form>
+                </div>
+            </div>
+        </center>
+    </div>
+
+            </body>
+            </html>
+            {% endblock content %}
+
+
+
+            <footer>
+                <p>Author: B-22</p>
+            </footer>
+
+</center>

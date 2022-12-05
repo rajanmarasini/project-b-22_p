@@ -1,0 +1,87 @@
+{% load bootstrap5 %}
+{% bootstrap_css %}
+{% bootstrap_javascript %}
+{% bootstrap_messages %}
+{% load static %}
+
+{% load socialaccount %}
+
+<head>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.css" />
+    <link rel="stylesheet" href="{% static 'BookExchange/style.css' %}">
+
+</head>
+
+    {% if user.is_authenticated %}
+    <h5>     Welcome, You are logged in as {{ user.username }}</h5>
+
+    {% else %}
+
+    {% endif %}
+    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+        <div class="container-fluid">
+            <a class="navbar-brand" href="/home">
+                <div class="logo-image">
+                    <img src='https://www.pngkey.com/png/detail/8-87431_images-pngpix-stack-transparent-book-png.png' class="img-fluid">
+                </div>
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav">
+                    <li class="nav-item">
+                        <a class="nav-link active" aria-current="page" href="/home">Home</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/sell/">Sell a Textbook</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/list/">Buy a Textbook</a>
+                    </li>
+                    <!-- <li class="nav-item">
+                        <a class="nav-link" href="/professors/">Professors</a>
+                    </li> -->
+
+                    <li class="nav-item">
+                        <a class="nav-link" href="/userprofile">Profile</a>
+                    </li>
+                </ul>
+            </div>
+            <div class="navbar-nav navbar-right">
+                <ul class="nav navbar-nav navbar-right">
+                    <a class="navbar-brand" href="/favorites">
+                        <div class="logo-image">
+                            <img src='https://www.citypng.com/public/uploads/preview/heart-black-button-icon-transparent-background-11639591554azr8yhqyje.png' class="img-fluid">
+                        </div>
+                    </a>
+                </ul>
+            </div>
+            <div class="navbar-nav navbar-right">
+                <ul class="nav navbar-nav navbar-right">
+                    {% if user.is_authenticated %}
+                    <li class="nav-item">
+                        <a class="nav-link active" aria-current="page" href="/logout"><span style="color:darkred;"><b>Logout</b></span></a>
+                    </li>
+                    {% else %}
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% provider_login_url 'google' %}"><span style="color:MediumSeaGreen;"><b>Login</b></span></a>
+                    </li>
+                    {% endif %}
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+<head>
+    <title>API Display</title>
+</head>
+<body>
+    {% comment %} Integrating Luther's/SIS Api {% endcomment %}
+    <h1>List of Professors</h1>
+    <h2>Attention! Please refer to your professor's syllabus to make sure you get the correct textbooks. Thank you!</h2>
+    {% for i in response %}
+    <br>Instructor Name: {{i.instructor.name}}, Course: {{i.description}}, Class Number: {{i.course_number}}</br>
+    {% endfor %}
+</body>
+

@@ -1,0 +1,190 @@
+{% load bootstrap5 %}
+{% bootstrap_css %}
+{% bootstrap_javascript %}
+{% bootstrap_messages %}
+{% load static %}
+{% load socialaccount %}
+
+<head>
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.css" />
+	<link rel="stylesheet" href="{% static 'BookExchange/style.css' %}">
+	<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.1/dist/css/bootstrap.min.css" rel="stylesheet" />
+
+</head>
+
+<!doctype html>
+
+	{% if user.is_authenticated %}
+<h5>     Welcome, You are logged in as {{ user.username }}</h5>
+
+	{% else %}
+
+	{% endif %}
+{% block content %}
+<body>
+	<html lang="en">
+	<nav class="navbar navbar-expand-lg navbar-light bg-light">
+		<div class="container-fluid">
+			<a class="navbar-brand" href="/home">
+				<div class="logo-image">
+					<img src='https://www.pngkey.com/png/detail/8-87431_images-pngpix-stack-transparent-book-png.png' class="img-fluid">
+				</div>
+			</a>
+			<button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+				<span class="navbar-toggler-icon"></span>
+			</button>
+			<div class="collapse navbar-collapse" id="navbarNav">
+				<ul class="navbar-nav">
+					{% if user.is_authenticated %}
+					<li class="nav-item">
+						<a class="nav-link active" aria-current="page" href="/home">Home</a>
+					</li>
+					{% else %}
+					<li class="nav-item">
+						<a class="nav-link active" aria-current="page" href="{% provider_login_url 'google' %}">Home</a>
+					</li>
+					{% endif %}
+
+					{% if user.is_authenticated %}
+					<li class="nav-item">
+						<a class="nav-link" href="/sell/">Sell a Textbook</a>
+					</li>
+					{% else %}
+					<li class="nav-item">
+						<a class="nav-link" href="{% provider_login_url 'google' %}">Sell a Textbook</a>
+					</li>
+					{% endif %}
+
+					{% if user.is_authenticated %}
+					<li class="nav-item">
+						<a class="nav-link" href="/list/">Buy a Textbook</a>
+					</li>
+					{% else %}
+					<li class="nav-item">
+						<a class="nav-link" href="{% provider_login_url 'google' %}">Buy a Textbook</a>
+					</li>
+					{% endif %}
+
+
+					<!-- <li class="nav-item">
+						<a class="nav-link" href="/professors/">Professors</a>
+					</li> -->
+					{% if user.is_authenticated %}
+					<li class="nav-item">
+						<a class="nav-link" href="/userprofile/{{ user.username }}">Profile</a>
+					</li>
+					{% else %}
+					<li class="nav-item">
+						<a class="nav-link" href="{% provider_login_url 'google' %}">Profile</a>
+					</li>
+					{% endif %}
+
+
+				</ul>
+			</div>
+			<div class="navbar-nav navbar-right">
+				<ul class="nav navbar-nav navbar-right">
+					{% if user.is_authenticated %}
+					<a class="navbar-brand" href="/favorites">
+						<div class="logo-image">
+							<img src='https://www.citypng.com/public/uploads/preview/heart-black-button-icon-transparent-background-11639591554azr8yhqyje.png' class="img-fluid">
+						</div>
+					</a>
+					{% else %}
+					<a class="navbar-brand" href="{% provider_login_url 'google' %}">
+						<div class="logo-image">
+							<img src='https://www.citypng.com/public/uploads/preview/heart-black-button-icon-transparent-background-11639591554azr8yhqyje.png' class="img-fluid">
+						</div>
+					</a>
+					{% endif %}
+				</ul>
+			</div>
+			<div class="navbar-nav navbar-right">
+				<ul class="nav navbar-nav navbar-right">
+					{% if user.is_authenticated %}
+					<li class="nav-item">
+						<a class="nav-link active" aria-current="page" href="/logout"><span style="color:darkred;"><b>Logout</b></span></a>
+					</li>
+					{% else %}
+					<li class="nav-item">
+						<a class="nav-link" href="{% provider_login_url 'google' %}"><span style="color:MediumSeaGreen;"><b>Login</b></span></a>
+					</li>
+					{% endif %}
+				</ul>
+			</div>
+		</div>
+	</nav>
+
+	<br>
+	<div>
+		<div class="content-section" style"position:relative; left:300px; top:200px;">
+			<form method="POST">
+				{% csrf_token %}
+				{{ form }}
+				<style>
+					form {
+						display: flex;
+						flex-direction: column;
+						background: #d2dce1;
+						padding: 4vh 3vh;
+					}
+				</style>
+				<br></br><br></br>
+				<input type="submit" id="button" class="button_active" value="Save" onclick="myFunction();" />
+				<script>
+					function myFunction() {
+						alert("Your Profile has been saved");
+					};
+				</script>
+			</form>
+			<a href="/userprofile/{{ user.username }}"><input type="submit" class="button_active" value="Exit"></a>
+		</div>
+	</div>
+	</br>
+
+
+
+</body>
+</html>
+{% endblock content %}
+<!-- <table>
+	<tr>
+<div class="fieldWrapper">
+	{{ form.subject.errors }}
+	<label for="last_name">Last Name:</label>
+	<td align="left"></td><input id="last_name" type="text" name="last_name" maxlength="100" required>
+</div>
+<div class="fieldWrapper">
+	{{ form.subject.errors }}
+	<label for="first_name">First Name:</label>
+	<td align="left"></td><input id="first_name" type="text" name="first_name" maxlength="100" required>
+</div>
+<div class="fieldWrapper">
+	{{ form.subject.errors }}
+	<label for="major">Major:	</label>
+	<td align="left"></td><input id="major" type="text" name="major" maxlength="100" required>
+</div> <br>
+<br/>
+</td><label for="year">Year:	</label> <br>
+	</td><input type="radio" id="YEAR_OPTIONS[0][1]" name="year" value="YEAR_OPTIONS[0][1]">
+		<label for="YEAR_OPTIONS[0][1]"> 1st year</label><br>
+	</td><input type="radio" id="YEAR_OPTIONS[1][1]" name="year" value="YEAR_OPTIONS[1][1]">
+		<label for="YEAR_OPTIONS[1][1]"> 2nd year</label><br>
+	</td><input type="radio" id="YEAR_OPTIONS[2][1]" name="year" value="YEAR_OPTIONS[2][1]">
+		<label for="YEAR_OPTIONS[2][1]"> 3rd year</label><br>
+	</td><input type="radio" id="YEAR_OPTIONS[3][2]" name="year" value="YEAR_OPTIONS[3][2]">
+		<label for="YEAR_OPTIONS[3][2]"> 4th year</label><br>
+	<br>
+</td><label for="location">Location:	</label> <br>
+	</td><input type="radio" id="LOCATION_OPTIONS[0][1]" name="location" value="LOCATION_OPTIONS[0][1]">
+		<label for="LOCATION_OPTIONS[0][1]">On Grounds </label><br>
+	</td><input type="radio" id="LOCATION_OPTIONS[1][1]" name="location" value="LOCATION_OPTIONS[1][1]">
+		<label for="LOCATION_OPTIONS[1][1]">Off Grounds</label><br>
+<div class="fieldWrapper">
+	{{ form.subject.errors }}
+	<label for="email">Email:</label>
+	<td align="left"></td><input id="email" type="text" name="email" maxlength="100" required>
+</div>
+</tr>
+</table>
+-->

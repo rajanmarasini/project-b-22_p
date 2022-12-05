@@ -1,0 +1,41 @@
+#backgroundimage {
+	background-image: url('images/textbooks2.jpg');
+	width: 100vw;
+	height: 100vh;
+	background-size: 100% 100%;
+	background-repeat: no-repeat;
+	background-attachment: fixed;
+	position: relative;
+}
+#BottomImage {
+	background-image: url('images/book.jpeg');
+	width: 100vw;
+	height: 60vh;
+	background-size: 100% 100%;
+	background-repeat: no-repeat;
+	background-attachment: fixed;
+	position: relative;
+}
+
+.logo-image {
+	width: 40px;
+	height: 40px;
+	border-radius: 50%;
+	overflow: hidden;
+	margin-top: -6px;
+}
+
+.OutlineText {
+	font: Tahoma, Geneva, sans-serif;
+	font-size: 64px;
+	color: white;
+	text-shadow:
+	/* Outline */
+	-1px -1px 0 #FFFFFF, 1px -1px 0 #FFFFFF, -1px 1px 0 #FFFFFF, 1px 1px 0 #FFFFFF, -2px 0 0 #FFFFFF, 2px 0 0 #FFFFFF, 0 2px 0 #FFFFFF, 0 -2px 0 #FFFFFF; /* Terminate with a semi-colon */
+}
+
+body {
+	margin: 0;
+	padding: 0;
+	font-family: sans-serif;
+}
